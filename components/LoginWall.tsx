@@ -255,73 +255,73 @@ export const LoginWall: React.FC<LoginWallProps> = ({ onAccessGranted }) => {
 
   if (authChecking) {
     return (
-      <div id="auth-loading" class="min-h-screen bg-slate-50 flex flex-col items-center justify-center p-4">
-        <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-vintage-moss mb-4"></div>
-        <p class="text-sm font-medium text-slate-600">Verificando credenciais...</p>
+      <div id="auth-loading" className="min-h-screen bg-slate-50 flex flex-col items-center justify-center p-4">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-vintage-moss mb-4"></div>
+        <p className="text-sm font-medium text-slate-600">Verificando credenciais...</p>
       </div>
     );
   }
 
   return (
-    <div id="login-wall-container" class="min-h-screen bg-vintage-offwhite flex flex-col justify-center py-12 px-4 sm:px-6 lg:px-8">
-      <div class="max-w-md w-full mx-auto bg-white rounded-3xl shadow-xl overflow-hidden border border-slate-100">
+    <div id="login-wall-container" className="min-h-screen bg-vintage-offwhite flex flex-col justify-center py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-md w-full mx-auto bg-white rounded-3xl shadow-xl overflow-hidden border border-slate-100">
         
         {/* Banner Decorativo / Logo */}
-        <div class="bg-vintage-moss px-8 py-8 text-center text-white relative">
-          <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/fabric-of-the-world.png')] opacity-10"></div>
-          <div class="w-12 h-12 bg-vintage-mustard rounded-full flex items-center justify-center mx-auto mb-3 text-2xl shadow-md">
+        <div className="bg-vintage-moss px-8 py-8 text-center text-white relative">
+          <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/fabric-of-the-world.png')] opacity-10"></div>
+          <div className="w-12 h-12 bg-vintage-mustard rounded-full flex items-center justify-center mx-auto mb-3 text-2xl shadow-md">
             🧶
           </div>
-          <h2 class="font-display text-2xl font-bold tracking-tight text-white">
+          <h2 className="font-display text-2xl font-bold tracking-tight text-white">
             Esquema Fácil
           </h2>
-          <p class="mt-1 text-xs text-vintage-mossVeryLight uppercase tracking-widest font-semibold">
+          <p className="mt-1 text-xs text-vintage-mossVeryLight uppercase tracking-widest font-semibold">
             Tricotando com o Zé
           </p>
         </div>
 
         {/* Corpo */}
-        <div class="px-8 py-8">
+        <div className="px-8 py-8">
           
           {/* Alertas e Erros */}
           {error && (
-            <div class="mb-4 p-3 bg-red-50 border-l-4 border-red-500 text-red-700 text-xs rounded-r-lg font-medium">
+            <div className="mb-4 p-3 bg-red-50 border-l-4 border-red-500 text-red-700 text-xs rounded-r-lg font-medium">
               {error}
             </div>
           )}
 
           {successMessage && (
-            <div class="mb-4 p-3 bg-emerald-50 border-l-4 border-emerald-500 text-emerald-800 text-xs rounded-r-lg font-medium">
+            <div className="mb-4 p-3 bg-emerald-50 border-l-4 border-emerald-500 text-emerald-800 text-xs rounded-r-lg font-medium">
               {successMessage}
             </div>
           )}
 
           {/* Estado de Acesso Negado / Sem Assinatura do Usuário Autenticado */}
           {user && userData && !userData.hasAccess ? (
-            <div class="text-center space-y-4">
-              <div class="bg-amber-50 rounded-xl p-4 border border-amber-100 text-left">
-                <div class="flex items-center space-x-2 text-amber-800 font-bold text-sm mb-1">
+            <div className="text-center space-y-4">
+              <div className="bg-amber-50 rounded-xl p-4 border border-amber-100 text-left">
+                <div className="flex items-center space-x-2 text-amber-800 font-bold text-sm mb-1">
                   <span>⚠️</span>
                   <span>Acesso Restrito</span>
                 </div>
-                <p class="text-xs text-slate-600 leading-relaxed">
-                  Olá, <strong class="text-slate-800">{user.displayName || user.email}</strong>! Sua conta está autenticada, mas não detectamos uma assinatura ativa ou nível de membro elegível do YouTube.
+                <p className="text-xs text-slate-600 leading-relaxed">
+                  Olá, <strong className="text-slate-800">{user.displayName || user.email}</strong>! Sua conta está autenticada, mas não detectamos uma assinatura ativa ou nível de membro elegível do YouTube.
                 </p>
               </div>
 
-              <div class="bg-vintage-mossVeryLight rounded-xl p-5 border border-slate-200 text-center space-y-3">
-                <h4 class="font-display font-bold text-sm text-vintage-moss">Assinar via Mercado Pago</h4>
-                <p class="text-xs text-slate-500">
+              <div className="bg-vintage-mossVeryLight rounded-xl p-5 border border-slate-200 text-center space-y-3">
+                <h4 className="font-display font-bold text-sm text-vintage-moss">Assinar via Mercado Pago</h4>
+                <p className="text-xs text-slate-500">
                   Desbloqueie acesso total instantâneo por apenas R$ 29,90 por mês. Cancele quando quiser.
                 </p>
                 
                 <button
                   onClick={handleSubscribeMercadoPago}
                   disabled={checkoutLoading}
-                  class="w-full bg-emerald-600 hover:bg-emerald-700 disabled:bg-slate-300 text-white font-medium py-3 px-4 rounded-xl transition duration-150 text-sm shadow-sm flex items-center justify-center space-x-2"
+                  className="w-full bg-emerald-600 hover:bg-emerald-700 disabled:bg-slate-300 text-white font-medium py-3 px-4 rounded-xl transition duration-150 text-sm shadow-sm flex items-center justify-center space-x-2"
                 >
                   {checkoutLoading ? (
-                    <span class="animate-spin rounded-full h-4 w-4 border-t-2 border-b-2 border-white"></span>
+                    <span className="animate-spin rounded-full h-4 w-4 border-t-2 border-b-2 border-white"></span>
                   ) : (
                     <>
                       <span>💳</span>
@@ -331,9 +331,9 @@ export const LoginWall: React.FC<LoginWallProps> = ({ onAccessGranted }) => {
                 </button>
               </div>
 
-              <div class="pt-4 border-t border-slate-100 flex items-center justify-between text-xs">
-                <span class="text-slate-400">Deseja alternar de conta?</span>
-                <button onClick={handleLogout} class="text-vintage-clay hover:underline font-bold">
+              <div className="pt-4 border-t border-slate-100 flex items-center justify-between text-xs">
+                <span className="text-slate-400">Deseja alternar de conta?</span>
+                <button onClick={handleLogout} className="text-vintage-clay hover:underline font-bold">
                   Sair da Conta
                 </button>
               </div>
@@ -341,10 +341,10 @@ export const LoginWall: React.FC<LoginWallProps> = ({ onAccessGranted }) => {
           ) : (
             <>
               {/* Tabs para novo login */}
-              <div class="flex bg-slate-100 p-1 rounded-xl mb-6">
+              <div className="flex bg-slate-100 p-1 rounded-xl mb-6">
                 <button
                   onClick={() => { setActiveTab("youtube"); setError(null); }}
-                  class={`flex-1 text-center py-2 text-xs font-semibold rounded-lg transition-all duration-150 ${
+                  className={`flex-1 text-center py-2 text-xs font-semibold rounded-lg transition-all duration-150 ${
                     activeTab === "youtube"
                       ? "bg-white text-vintage-moss shadow-sm"
                       : "text-slate-500 hover:text-slate-800"
@@ -354,7 +354,7 @@ export const LoginWall: React.FC<LoginWallProps> = ({ onAccessGranted }) => {
                 </button>
                 <button
                   onClick={() => { setActiveTab("mercadopago"); setError(null); }}
-                  class={`flex-1 text-center py-2 text-xs font-semibold rounded-lg transition-all duration-150 ${
+                  className={`flex-1 text-center py-2 text-xs font-semibold rounded-lg transition-all duration-150 ${
                     activeTab === "mercadopago"
                       ? "bg-white text-vintage-moss shadow-sm"
                       : "text-slate-500 hover:text-slate-800"
@@ -366,14 +366,14 @@ export const LoginWall: React.FC<LoginWallProps> = ({ onAccessGranted }) => {
 
               {/* CONTEÚDO TAB: MEMBRO DO YOUTUBE */}
               {activeTab === "youtube" && (
-                <div class="space-y-5 text-center">
-                  <p class="text-xs text-slate-500 leading-relaxed">
-                    Se você é membro ativo do canal <strong class="text-vintage-moss">Tricotando com o Zé</strong> em nível elegível, use o botão abaixo para se autenticar e liberar o acesso automático.
+                <div className="space-y-5 text-center">
+                  <p className="text-xs text-slate-500 leading-relaxed">
+                    Se você é membro ativo do canal <strong className="text-vintage-moss">Tricotando com o Zé</strong> em nível elegível, use o botão abaixo para se autenticar e liberar o acesso automático.
                   </p>
 
-                  <div class="p-4 bg-slate-50 rounded-2xl border border-slate-100 text-left space-y-2">
-                    <h4 class="text-xs font-bold text-slate-700">Como funciona?</h4>
-                    <ul class="text-[11px] text-slate-500 space-y-1 list-disc list-inside">
+                  <div className="p-4 bg-slate-50 rounded-2xl border border-slate-100 text-left space-y-2">
+                    <h4 className="text-xs font-bold text-slate-700">Como funciona?</h4>
+                    <ul className="text-[11px] text-slate-500 space-y-1 list-disc list-inside">
                       <li>Clique no botão e conecte sua conta Google</li>
                       <li>Nossos sistemas verificarão sua assinatura</li>
                       <li>Acesso imediato e 100% gratuito para membros elegíveis</li>
@@ -383,16 +383,16 @@ export const LoginWall: React.FC<LoginWallProps> = ({ onAccessGranted }) => {
                   <button
                     onClick={handleGoogleLogin}
                     disabled={loading}
-                    class="w-full bg-red-600 hover:bg-red-700 disabled:bg-slate-300 text-white font-medium py-3 px-4 rounded-xl transition duration-150 text-sm shadow-md flex items-center justify-center space-x-2"
+                    className="w-full bg-red-600 hover:bg-red-700 disabled:bg-slate-300 text-white font-medium py-3 px-4 rounded-xl transition duration-150 text-sm shadow-md flex items-center justify-center space-x-2"
                   >
                     {youtubeVerifying ? (
                       <>
-                        <span class="animate-spin rounded-full h-4 w-4 border-t-2 border-b-2 border-white"></span>
+                        <span className="animate-spin rounded-full h-4 w-4 border-t-2 border-b-2 border-white"></span>
                         <span>Verificando no YouTube...</span>
                       </>
                     ) : (
                       <>
-                        <svg class="h-4 w-4 fill-current" viewBox="0 0 24 24">
+                        <svg className="h-4 w-4 fill-current" viewBox="0 0 24 24">
                           <path d="M23.498 6.163a3.003 3.003 0 0 0-2.11-2.108C19.52 3.54 12 3.54 12 3.54s-7.52 0-9.388.515a3.003 3.003 0 0 0-2.11 2.108C0 8.033 0 12 0 12s0 3.967.502 5.837a3.003 3.003 0 0 0 2.11 2.108C4.48 20.46 12 20.46 12 20.46s7.52 0 9.388-.515a3.003 3.003 0 0 0 2.11-2.108C24 15.967 24 12 24 12s0-3.967-.502-5.837zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
                         </svg>
                         <span>Entrar com Google & Verificar</span>
@@ -404,49 +404,49 @@ export const LoginWall: React.FC<LoginWallProps> = ({ onAccessGranted }) => {
 
               {/* CONTEÚDO TAB: MERCADO PAGO / EMAIL E SENHA */}
               {activeTab === "mercadopago" && (
-                <div class="space-y-4">
-                  <p class="text-xs text-slate-500 leading-relaxed text-center">
+                <div className="space-y-4">
+                  <p className="text-xs text-slate-500 leading-relaxed text-center">
                     Não é membro do canal? Acesse criando uma assinatura dedicada da plataforma usando Mercado Pago.
                   </p>
 
-                  <form onSubmit={handleEmailAuth} class="space-y-3">
+                  <form onSubmit={handleEmailAuth} className="space-y-3">
                     <div>
-                      <label class="block text-xs font-medium text-slate-600 mb-1">E-mail</label>
+                      <label className="block text-xs font-medium text-slate-600 mb-1">E-mail</label>
                       <input
                         type="email"
                         required
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         placeholder="seuemail@exemplo.com"
-                        class="w-full px-3 py-2 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-vintage-moss"
+                        className="w-full px-3 py-2 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-vintage-moss"
                       />
                     </div>
 
                     <div>
-                      <label class="block text-xs font-medium text-slate-600 mb-1">Senha</label>
+                      <label className="block text-xs font-medium text-slate-600 mb-1">Senha</label>
                       <input
                         type="password"
                         required
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                         placeholder="Sua senha de acesso"
-                        class="w-full px-3 py-2 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-vintage-moss"
+                        className="w-full px-3 py-2 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-vintage-moss"
                       />
                     </div>
 
                     <button
                       type="submit"
                       disabled={loading}
-                      class="w-full bg-vintage-moss hover:bg-vintage-mossLight disabled:bg-slate-300 text-white font-medium py-2.5 rounded-xl transition duration-150 text-xs shadow-sm"
+                      className="w-full bg-vintage-moss hover:bg-vintage-mossLight disabled:bg-slate-300 text-white font-medium py-2.5 rounded-xl transition duration-150 text-xs shadow-sm"
                     >
                       {loading ? "Processando..." : isSignUp ? "Cadastrar Conta" : "Entrar com E-mail"}
                     </button>
                   </form>
 
-                  <div class="text-center pt-2">
+                  <div className="text-center pt-2">
                     <button
                       onClick={() => setIsSignUp(!isSignUp)}
-                      class="text-xs text-vintage-clay hover:underline font-semibold"
+                      className="text-xs text-vintage-clay hover:underline font-semibold"
                     >
                       {isSignUp ? "Já tem conta? Entrar" : "Não tem conta? Cadastrar-se"}
                     </button>
@@ -482,7 +482,7 @@ export const LoginWall: React.FC<LoginWallProps> = ({ onAccessGranted }) => {
         </div>
 
         {/* Rodapé da login wall */}
-        <div class="bg-slate-50 px-8 py-4 border-t border-slate-100 flex items-center justify-between text-[10px] text-slate-400">
+        <div className="bg-slate-50 px-8 py-4 border-t border-slate-100 flex items-center justify-between text-[10px] text-slate-400">
           <span>Ambiente Seguro SSL</span>
           <span>© Tricotando com o Zé 2026</span>
         </div>
