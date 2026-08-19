@@ -2651,17 +2651,6 @@ const handleAutoGrade = () => {
     setError(null);
   };
 
-  if (!authorizedUser) {
-    return (
-      <LoginWall 
-        onAccessGranted={(user, data) => {
-          setAuthorizedUser(user);
-          setAuthorizedUserData(data);
-        }} 
-      />
-    );
-  }
-
   return (
     <div className="bg-slate-50 text-slate-800 font-sans min-h-screen selection:bg-amber-100 selection:text-vintage-moss">
       <div className="min-h-screen flex flex-col items-center p-4 sm:p-6 lg:p-8 no-print">

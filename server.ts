@@ -4,7 +4,6 @@ import cors from "cors";
 import admin from "firebase-admin";
 import { getFirestore, FieldValue, Firestore } from "firebase-admin/firestore";
 import { createServer as createViteServer } from "vite";
-import firebaseConfig from "./firebase-applet-config.json";
 
 const app = express();
 const PORT = 3000;
@@ -20,10 +19,10 @@ function getDb(): Firestore | null {
     try {
       // Initialize with our app's Firebase project ID
       admin.initializeApp({
-        projectId: firebaseConfig.projectId
+        projectId: "gen-lang-client-0909510203"
       });
-      db = getFirestore(firebaseConfig.firestoreDatabaseId);
-      console.log(`Firebase Admin successfully initialized for project ${firebaseConfig.projectId}.`);
+      db = getFirestore();
+      console.log("Firebase Admin successfully initialized.");
     } catch (e: any) {
       console.error("Failed to initialize firebase-admin:", e.message);
     }
@@ -35,97 +34,39 @@ function getDb(): Firestore | null {
 // YOUTUBE MEMBERSHIP VERIFICATION ENDPOINT
 // ==========================================
 app.post("/api/youtube/verify", async (req, res) => {
-  const { userId, channelId, accessToken, userEmail } = req.body;
-  if (!userId) {
-    return res.status(400).json({ error: "userId is required" });
-  }
-
-  // If creator (Zé), grant immediate access
-  if (userEmail && userEmail.toLowerCase() === "jose.lancellotti@gmail.com") {
-    const firestore = getDb();
-    if (firestore) {
-      const userRef = firestore.collection("users").doc(userId);
-      await userRef.set({
-        hasAccess: true,
-        membershipType: "youtube_member",
-        membershipLevel: "Criador do Canal",
-        updatedAt: FieldValue.serverTimestamp()
-      }, { merge: true });
-    }
-    return res.json({ success: true, level: "Criador do Canal" });
+  const { userId, channelId } = req.body;
+  if (!userId || !channelId) {
+    return res.status(400).json({ error: "userId and channelId are required" });
   }
 
   const apiKey = process.env.YOUTUBE_API_KEY;
-  const creatorChannelId = process.env.YOUTUBE_CHANNEL_ID || "UC5KMdGiQBcKtXvstEi2aeAg";
-  const allowedLevelsEnv = process.env.ALLOWED_YOUTUBE_LEVELS; // e.g., "Tricoteiro VIP, Nível 2"
-  const allowedLevels = allowedLevelsEnv 
-    ? allowedLevelsEnv.split(",").map(s => s.trim().toLowerCase()).filter(Boolean)
-    : [];
+  const creatorChannelId = process.env.YOUTUBE_CHANNEL_ID;
 
   let isMember = false;
   let level = "Membro Tricotando";
-  let rejectionReason: string | null = null;
 
   if (!apiKey) {
     // DEMO / FALLBACK MODE when YouTube credentials are not set up in environment
     console.log(`[Demo Mode] YouTube Verification for User: ${userId} with ChannelId: ${channelId}`);
     isMember = true;
-    level = allowedLevelsEnv ? allowedLevelsEnv.split(",")[0].trim() : "Tricoteiro(a) de Ouro (Membro YouTube)";
+    level = "Tricoteiro(a) de Ouro (Membro YouTube)";
   } else {
     // REAL API INTEGRATION
     try {
-      // 1. Google YouTube Members.list API with API Key / Channel ID
+      // Google YouTube Members.list API
+      // Since members list requires OAuth, we check if the user is a channel member
       const url = `https://www.googleapis.com/youtube/v3/members?part=snippet&filterByMemberChannelId=${channelId}&key=${apiKey}`;
-      const headers: Record<string, string> = {};
-      if (accessToken) {
-        headers["Authorization"] = `Bearer ${accessToken}`;
-      }
-      const response = await fetch(url, { headers });
+      const response = await fetch(url);
       if (response.ok) {
         const data = await response.json() as any;
         if (data.items && data.items.length > 0) {
+          isMember = true;
           const details = data.items[0].snippet?.membershipsDetails;
-          const userLevel = details?.highestReadableLevel || "Membro Ativo";
-          level = userLevel;
-
-          // Check if specific membership level is required
-          if (allowedLevels.length > 0) {
-            const hasAllowedLevel = allowedLevels.some(allowed => 
-              userLevel.toLowerCase().includes(allowed) || allowed.includes(userLevel.toLowerCase())
-            );
-            if (hasAllowedLevel) {
-              isMember = true;
-            } else {
-              isMember = false;
-              rejectionReason = `Seu nível atual de membro (${userLevel}) não inclui acesso ao Esquema Fácil. Níveis permitidos: ${allowedLevelsEnv}.`;
-            }
-          } else {
-            isMember = true;
-          }
+          level = details?.highestReadableLevel || "Membro Ativo";
         }
       } else {
         const errText = await response.text();
-        console.log(`YouTube members endpoint response (${response.status}):`, errText);
-        
-        // 2. Fallback: If members.list requires channel owner credentials, check subscriptions with user token
-        if (accessToken) {
-          const subUrl = `https://www.googleapis.com/youtube/v3/subscriptions?part=snippet&forChannelId=${creatorChannelId}&mine=true`;
-          const subRes = await fetch(subUrl, {
-            headers: { "Authorization": `Bearer ${accessToken}` }
-          });
-          if (subRes.ok) {
-            const subData = await subRes.json() as any;
-            if (subData.items && subData.items.length > 0) {
-              if (allowedLevels.length > 0) {
-                // If strict level required, subscription alone is not enough
-                rejectionReason = `Inscrição identificada, mas o acesso ao Esquema Fácil requer o nível de membro: ${allowedLevelsEnv}.`;
-              } else {
-                isMember = true;
-                level = "Inscrito / Membro do Canal";
-              }
-            }
-          }
-        }
+        console.error(`YouTube API error (${response.status}):`, errText);
       }
     } catch (err: any) {
       console.error("YouTube verification call failed:", err.message);
@@ -140,7 +81,6 @@ app.post("/api/youtube/verify", async (req, res) => {
         await userRef.set({
           hasAccess: true,
           membershipType: "youtube_member",
-          membershipLevel: level,
           youtubeChannelId: channelId,
           updatedAt: FieldValue.serverTimestamp()
         }, { merge: true });
@@ -154,9 +94,7 @@ app.post("/api/youtube/verify", async (req, res) => {
     }
   }
 
-  return res.status(401).json({ 
-    error: rejectionReason || "Canal do YouTube não identificado como membro ativo no nível exigido." 
-  });
+  return res.status(401).json({ error: "Canal do YouTube não identificado como membro ativo do nível exigido." });
 });
 
 // ==========================================
@@ -168,7 +106,7 @@ app.post("/api/mercadopago/create-preference", async (req, res) => {
     return res.status(400).json({ error: "Email and userId are required" });
   }
 
-  const accessToken = process.env.MERCADO_PAGO_ACCESS_TOKEN || process.env.MERCADOPAGO_ACCESS_TOKEN;
+  const accessToken = process.env.MERCADO_PAGO_ACCESS_TOKEN;
 
   if (!accessToken) {
     // DEMO / SIMULATOR MODE
@@ -234,7 +172,7 @@ app.post("/api/mercadopago/webhook", async (req, res) => {
   let paymentId = data?.id || "mock-payment-" + Math.floor(Math.random() * 1000000);
 
   // If this is a real production notification from Mercado Pago
-  const accessToken = process.env.MERCADO_PAGO_ACCESS_TOKEN || process.env.MERCADOPAGO_ACCESS_TOKEN;
+  const accessToken = process.env.MERCADO_PAGO_ACCESS_TOKEN;
   if (accessToken && action === "payment.created" && data?.id) {
     try {
       const response = await fetch(`https://api.mercadopago.com/v1/payments/${data.id}`, {
@@ -368,7 +306,7 @@ async function start() {
     // Production serving of bundled static assets
     const distPath = path.join(process.cwd(), "dist");
     app.use(express.static(distPath));
-    app.get("*all", (req, res) => {
+    app.get("*", (req, res) => {
       res.sendFile(path.join(distPath, "index.html"));
     });
     console.log("Serving production bundle from dist.");

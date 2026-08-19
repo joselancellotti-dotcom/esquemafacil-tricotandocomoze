@@ -3,17 +3,12 @@ import { getAuth, GoogleAuthProvider } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 import firebaseConfig from "./firebase-applet-config.json";
 
-// Initialize Firebase App with active API Key
-const activeFirebaseConfig = {
-  ...firebaseConfig,
-  apiKey: (import.meta as any).env?.VITE_FIREBASE_API_KEY || firebaseConfig.apiKey
-};
-
-const app = initializeApp(activeFirebaseConfig);
+// Initialize Firebase App
+const app = initializeApp(firebaseConfig);
 
 // Initialize Firebase Auth & Firestore
 export const auth = getAuth(app);
-export const db = getFirestore(app, firebaseConfig.firestoreDatabaseId);
+export const db = getFirestore(app);
 
 // Configure Google OAuth Provider
 export const googleProvider = new GoogleAuthProvider();

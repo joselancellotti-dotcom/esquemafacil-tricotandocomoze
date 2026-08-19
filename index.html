@@ -96,8 +96,17 @@
         width: 100%;
       }
     </style>
-    <link rel="stylesheet" href="/index.css">
-  </head>
+  <script type="importmap">
+{
+  "imports": {
+    "react/": "https://aistudiocdn.com/react@^19.2.0/",
+    "react": "https://aistudiocdn.com/react@^19.2.0",
+    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/"
+  }
+}
+</script>
+<link rel="stylesheet" href="/index.css">
+</head>
   <body class="bg-slate-50 font-sans antialiased">
     <div id="root"></div>
     <script type="module" src="/index.tsx"></script>
@@ -123,10 +132,6 @@
         document.body.appendChild(errDiv);
       });
       window.addEventListener('unhandledrejection', function(event) {
-        var reasonStr = (event.reason ? event.reason.stack || event.reason.message || event.reason : '').toString();
-        if (reasonStr.includes('WebSocket') || reasonStr.includes('@vite/client') || reasonStr.includes('vite')) {
-          return; // Ignorar avisos normais de WebSocket do Vite em ambiente de container
-        }
         var errDiv = document.createElement('div');
         errDiv.style.position = 'fixed';
         errDiv.style.bottom = '10px';
