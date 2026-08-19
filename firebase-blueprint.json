@@ -1,0 +1,53 @@
+{
+  "entities": {
+    "User": {
+      "title": "User Profile",
+      "description": "User profile containing access and subscription status",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string", "description": "Firebase Auth User ID" },
+        "email": { "type": "string", "format": "email", "description": "Email address" },
+        "displayName": { "type": "string", "description": "Display name" },
+        "photoURL": { "type": "string", "description": "Profile picture URL" },
+        "hasAccess": { "type": "boolean", "description": "Whether the user has active access to the application" },
+        "membershipType": { "type": "string", "enum": ["youtube_member", "subscriber", "none"], "description": "Type of access level" },
+        "youtubeChannelId": { "type": "string", "description": "YouTube channel ID" },
+        "subscriptionId": { "type": "string", "description": "Mercado Pago subscription preference or payment ID" },
+        "createdAt": { "type": "string", "format": "date-time", "description": "Creation timestamp" },
+        "updatedAt": { "type": "string", "format": "date-time", "description": "Last update timestamp" }
+      },
+      "required": ["uid", "email", "hasAccess", "membershipType"]
+    },
+    "SavedRecipe": {
+      "title": "Saved Recipe & Measurement Table",
+      "description": "Saved knitting project containing all measurement tables, grading and piece configurations",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "Recipe ID" },
+        "userId": { "type": "string", "description": "Owner user ID" },
+        "name": { "type": "string", "description": "Project/piece name" },
+        "projectType": { "type": "string", "description": "Type of project" },
+        "armholeType": { "type": "string", "description": "Armhole type" },
+        "necklineSelection": { "type": "string", "description": "Neckline type" },
+        "sizeCategory": { "type": "string", "description": "Size category" },
+        "mode": { "type": "string", "description": "Single or size grade mode" },
+        "selectedSize": { "type": "string", "description": "Selected size" },
+        "formData": { "type": "object", "description": "Full form data including body/sleeve measurements" },
+        "gradingValues": { "type": "object", "description": "Grading increments table" },
+        "createdAt": { "type": "string", "format": "date-time", "description": "Creation timestamp" },
+        "updatedAt": { "type": "string", "format": "date-time", "description": "Last update timestamp" }
+      },
+      "required": ["id", "userId", "name", "formData"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "User",
+      "description": "Individual user profiles and access statuses"
+    },
+    "/users/{userId}/recipes/{recipeId}": {
+      "schema": "SavedRecipe",
+      "description": "User saved recipes and measurement tables"
+    }
+  }
+}

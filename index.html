@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="h-full">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Esquema Fácil Tricotando com o Zé</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              vintage: {
+                moss: '#1F3F24', // Moss Green
+                mossLight: '#2D5633',
+                mossVeryLight: '#F0F4F1',
+                mustard: '#D97706', // Mustard Quente
+                clay: '#B45309', // Marrom Argila
+                offwhite: '#F4F6F4', // Vintage backdrop
+              },
+              emerald: {
+                50: '#F0F5F1',
+                100: '#DDECE0',
+                200: '#C0DDC5',
+                300: '#99C7A1',
+                400: '#6CA876',
+                500: '#488B53',
+                600: '#2D5633',
+                700: '#1F3F24', // Deep vintage moss green
+                800: '#142B18',
+                900: '#0A170C',
+              },
+              amber: {
+                50: '#FFFDF5',
+                100: '#FEF3C7',
+                200: '#FDE68A',
+                300: '#FCD34D',
+                400: '#FBBF24',
+                500: '#D97706', // Mostarda Quente
+                600: '#B45309',
+                700: '#92400E',
+                800: '#78350F',
+                900: '#451A03',
+              },
+              blue: {
+                50: '#F0F5F1',
+                100: '#DDECE0',
+                200: '#C0DDC5',
+                300: '#99C7A1',
+                400: '#669E70',
+                500: '#3D7948',
+                600: '#1F3F24', // Deep vintage moss green as our blue-600!
+                700: '#19331D',
+                800: '#122515',
+                900: '#0A170C',
+              },
+              slate: {
+                50: '#F4F6F4', // Off-white acinzentado suave!
+                100: '#E8ECE8', // Ligeiramente mais escuro para bordas/backgrounds secundários
+                200: '#D2D9D2',
+                300: '#B2BFB2',
+                400: '#8C9E8C',
+                500: '#6E7F6E',
+                600: '#546354',
+                700: '#3D493D',
+                800: '#273027',
+                900: '#141A14',
+              }
+            },
+            fontFamily: {
+              sans: ['Inter', 'sans-serif'],
+              display: ['Outfit', 'sans-serif'],
+            }
+          }
+        }
+      }
+    </script>
+    <style>
+      @media print {
+        body {
+          -webkit-print-color-adjust: exact !important;
+          print-color-adjust: exact !important;
+        }
+        .no-print {
+          display: none !important;
+        }
+        .print-only {
+          display: block !important;
+        }
+      }
+      /* Ajuste para garantir que o container de impressão ocupe a página toda */
+      #print-container {
+        width: 100%;
+      }
+    </style>
+    <link rel="stylesheet" href="/index.css">
+  </head>
+  <body class="bg-slate-50 font-sans antialiased">
+    <div id="root"></div>
+    <script type="module" src="/index.tsx"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script>
+      window.addEventListener('error', function(event) {
+        var errDiv = document.createElement('div');
+        errDiv.style.position = 'fixed';
+        errDiv.style.bottom = '10px';
+        errDiv.style.right = '10px';
+        errDiv.style.backgroundColor = '#fee2e2';
+        errDiv.style.color = '#991b1b';
+        errDiv.style.padding = '12px';
+        errDiv.style.border = '1px solid #f87171';
+        errDiv.style.borderRadius = '8px';
+        errDiv.style.zIndex = '99999';
+        errDiv.style.maxWidth = '400px';
+        errDiv.style.fontSize = '12px';
+        errDiv.style.fontFamily = 'monospace';
+        errDiv.style.boxShadow = '0 4px 6px -1px rgba(0,0,0,0.1)';
+        errDiv.innerText = 'Erro capturado: ' + (event.error ? event.error.stack || event.error.message : event.message) + '\nNo arquivo: ' + event.filename + ':' + event.lineno;
+        document.body.appendChild(errDiv);
+      });
+      window.addEventListener('unhandledrejection', function(event) {
+        var reasonStr = (event.reason ? event.reason.stack || event.reason.message || event.reason : '').toString();
+        if (reasonStr.includes('WebSocket') || reasonStr.includes('@vite/client') || reasonStr.includes('vite')) {
+          return; // Ignorar avisos normais de WebSocket do Vite em ambiente de container
+        }
+        var errDiv = document.createElement('div');
+        errDiv.style.position = 'fixed';
+        errDiv.style.bottom = '10px';
+        errDiv.style.right = '10px';
+        errDiv.style.backgroundColor = '#fee2e2';
+        errDiv.style.color = '#991b1b';
+        errDiv.style.padding = '12px';
+        errDiv.style.border = '1px solid #f87171';
+        errDiv.style.borderRadius = '8px';
+        errDiv.style.zIndex = '99999';
+        errDiv.style.maxWidth = '400px';
+        errDiv.style.fontSize = '12px';
+        errDiv.style.fontFamily = 'monospace';
+        errDiv.style.boxShadow = '0 4px 6px -1px rgba(0,0,0,0.1)';
+        errDiv.innerText = 'Rejeição não tratada: ' + (event.reason ? event.reason.stack || event.reason.message || event.reason : 'Erro desconhecido');
+        document.body.appendChild(errDiv);
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,8 @@
+{
+  "name": "Remix: Esquema Fácil - Tricotando com o Zé",
+  "description": "Seu atalho inteligente para criar receitas perfeitas instantaneamente! Modelagem de Blusas Fechadas com Cava Raglã - Decotes Redondo, em V e Canoa",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
